@@ -1,0 +1,11 @@
+.env
+
+/target
+
+# ethernet
+wallets.json
+
+# configs
+credentials.toml
+**/config*.toml
+**/*.json

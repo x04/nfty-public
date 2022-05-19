@@ -1,0 +1,108 @@
+[account]
+# generally you will want to get this from your metamask, a tutorial can be found here:
+# https://metamask.zendesk.com/hc/en-us/articles/360015289632-How-to-Export-an-Account-Private-Key
+private_key = ""
+
+[target]
+# the mode to run the bot in, one of the following:
+# - Drop
+# - Mint
+# - Limit
+mode = "Limit"
+
+# Drop config
+# username of artist on OpenSea, if specified will only buy listings from this user.
+artist_username = ""
+# the maximum orders to attempt to purchase, it has a minimum of 1 and max of 10, also note that you are subject to
+# paying some gas fees for orders you fail to get when running for more than 1 order, that being said it is recommended
+# to scale with multiple addresses instead of setting this value to anything higher than 1.
+max_orders = 5
+
+# Mint config
+# address of the smart contract to send the function call to.
+mint_address = "0x0000000000000000000000000000000000000000"
+# the signature of the function that will be used to mint the token.
+mint_function = "mint(uint256)"
+# the arguments to be passed to the mint function.
+mint_args = [{ type = "Uint", value = 5 }]
+# the value to send for the mint tx, this should generally be mint_price * token_count, depending on how many tokens
+# you want to mint. to clarify, we do not account for the amount of tokens you are minting so you must do this math
+# yourself.
+mint_value = 0.5e18
+# a unix timestamp to wait for before sending the tx to mint, 0 will result in no wait.
+mint_time = 0
+# the gas limit used for a mint transaction, scales with however many you are trying to mint.
+mint_gas = 1_000_000
+# the fee per gas in gwei you are willing to pay for a tx, total fee will vary based on the gas used for a tx.
+mint_gas_fee = 500
+
+# Floor/Limit config
+# - Collection = monitor listings under a collection
+# - Token = monitor orders under a specific token id
+limit_mode = "Collection"
+# the slug for the collection to search for buying opportunities on, can be found in the url for the collection.
+# NOTE: only for Rest api
+collection_slug = "galacticapes"
+# minimum price to attempt to purchase orders at in eth.
+minimum_price = 0.0
+# maximum price to attempt to purchase orders at in eth.
+maximum_price = 0.1
+# smart gas has 3 modes to improve your chances of copping typo listings:
+# - Enabled = use normal smart gas calculation where the higher of smart gas or normal gas is used
+# - Exclusive = use only smart gas calculations, essentially limits max transaction price to maximum_price
+# - Disabled = use only normal gas calculations (recommended gas * gas multiplier)
+# an example of smart gas would be if an order for 0.03 comes in while you have a max price of 0.3, the bot would
+# automatically calculate the gas that would be required to reach your 0.3 price point so you do not get beat in
+# gas wars.
+smart_gas = "Exclusive"
+
+# Shared config
+# the contract address of the asset you are targetting for drop/limit modes. can be found in the url of the asset on opensea.
+contract_address = "0x495f947276749ce646f68ac8c248420045cb7b5e"
+# the token id of the asset you are targetting for drop/limit modes. can also be found in the url of the asset on opensea.
+token_id = "110238896312374156694779971029466237810910659616547507179685594416760137712616"
+# randomizes the order sorting to reduce risk of running for the same order as fellow nfty user.
+# applies to both floor/limit modes as well as drop mode.
+randomize_orders = true
+
+[transaction]
+# mode determines the way nfty sends transactions, Flashbots is recommended although it does usually cost more gas
+# than the Basic mode (currently unimplemented).
+mode = "Flashbots"
+# provider_url is generally an https or ws url that we use to get information about the ethereum network.
+# you generally will not need to change this unless you know what you are doing.
+provider_url = "https://mainnet.infura.io/v3/"
+# flashbots relays to send bundles to.
+relays = ["https://relay.flashbots.net"]
+# gas_multiplier is used to mainly give your transactions a better chance of getting processed before anyone else's
+# especially when using the Flashbots mode it gives you a way better chance of having your bundle included, the tradeoff
+# is obviously you pay more in gas fees.
+gas_multiplier = 1.25
+# base_gas_amount is the default gas amount used for any smart contract calls, it will also be used if estimate_gas is
+# enabled and the gas estimation fails.
+base_gas_amount = 250_000
+# if true nfty will attempt to estimate the gas of a transaction before sending, not really necessary just set
+# a good enough base_gas_amount and dont worry about enabling this. if it is enabled and gas estimation fails
+# it defaults to base_gas_amount anyways.
+estimate_gas = false
+# gas_amount_multiplier is a multiplier that is applied to any estimated gas amount, just to make sure there that a
+# tx is not sent with too little gas
+gas_amount_multiplier = 1.25
+
+[dev]
+# if dry_run is true the bot will stop right before it sends a transaction, generally used for testing and simulating
+# Flashbots bundles without actually sending them.
+dry_run = true
+# if true Flashbots bundles will be simulated which can provide some insights as to why your bundles may or may not
+# have been included in a target black.
+simulate = false
+# the max amount of retries for sending a bundle before giving up on it.
+max_retries = 1
+# proxy url used for requests to opensea
+proxy_url = ""
+# api key to used for requests to opensea (optional)
+api_key = ""
+# api is either "Rest" or "GraphQL" which is the api used to fetch listings/other data
+api = "GraphQL"
+# private key to use for signing flashbots bundles, if empty uses wallet private key
+flashbots_signer = ""

@@ -1,0 +1,11 @@
+[workspace]
+members = [
+    "autosolve",
+    "cronet-sys",
+    "ethernet",
+    "net",
+    "nfty",
+    "shared",
+    "spyglass"
+]
+resolver = "2"

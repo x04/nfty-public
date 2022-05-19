@@ -1,0 +1,63 @@
+[account]
+private_key = ""
+dry_run = true
+simulate = false
+
+[global]
+mode = "Mint"
+proxy_url = ""
+provider_url = "https://mainnet.infura.io/v3/"
+flashbots_signer = ""
+relays = [
+    "https://relay.flashbots.net",
+    "https://mev-relay.ethermine.org",
+    "https://api.taichi.network:10001/rpc/public",
+    "https://api.edennetwork.io/v1/bundle",
+    "https://bundle.miningdao.io"
+]
+
+[mint]
+contract_address = "0x0000000000000000000000000000000000000000"
+function = "mint(uint256)"
+arguments = [{ type = "Uint", value = 5 }]
+value = 0.5e18
+gas_fee = 100
+priority_fee = 100
+gas_limit = 250_000
+start_time = 0
+transaction_count = 1
+state_function = ""
+script_identifier = ""
+
+[opensea]
+api = "GraphQL"
+api_key = ""
+api_delay = 500
+smart_gas = "Exclusive"
+estimate_gas = false
+gas_fee = 100
+priority_fee = 100
+gas_limit = 250_000
+maximum_retry_attempts = 10
+
+[opensea.drop]
+maximum_price = 0.0
+token_id = ""
+contract_address = ""
+listing_username = ""
+max_orders = 1
+
+[opensea.limit]
+mode = "Collection"
+collections = [
+    { slug = "doodles-official", minimum_price = 0.0, maximum_price = 10.0, traits = [
+        { type = "Exclude", name = "Head", value = "Pink" }
+    ] },
+    { slug = "kaiju-kingz", minimum_price = 0.0, maximum_price = 10.0, traits = [
+        { type = "Include", name = "Origin", value = "Genesis" }
+    ] }
+]
+token_id = ""
+contract_address = ""
+minimum_price = 0.0
+maximum_price = 6.0
